@@ -1,0 +1,151 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User account profile and preferences",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "username": { "type": "string" },
+        "avatarKey": { "type": "string" },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["userId", "email", "displayName"]
+    },
+    "Trip": {
+      "title": "Trip",
+      "description": "Shared travel expedition details, budget, and dates",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "startDate": { "type": "string" },
+        "endDate": { "type": "string" },
+        "currencyCode": { "type": "string" },
+        "budgetMinor": { "type": "number" },
+        "status": { "type": "string" },
+        "createdBy": { "type": "string" },
+        "memberIds": { "type": "array" },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["id", "name", "createdBy", "memberIds"]
+    },
+    "TripMember": {
+      "title": "TripMember",
+      "description": "Member participation record in a trip",
+      "type": "object",
+      "properties": {
+        "tripId": { "type": "string" },
+        "userId": { "type": "string" },
+        "role": { "type": "string" },
+        "targetMinor": { "type": "number" },
+        "joinedAt": { "type": "number" }
+      },
+      "required": ["tripId", "userId", "role"]
+    },
+    "Expense": {
+      "title": "Expense",
+      "description": "Tracked shared group expense item",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "tripId": { "type": "string" },
+        "title": { "type": "string" },
+        "amountMinor": { "type": "number" },
+        "category": { "type": "string" },
+        "location": { "type": "string" },
+        "description": { "type": "string" },
+        "expenseDate": { "type": "number" },
+        "status": { "type": "string" },
+        "createdBy": { "type": "string" },
+        "approvedBy": { "type": "string" },
+        "approvedAt": { "type": "number" },
+        "rejectionReason": { "type": "string" },
+        "receiptNote": { "type": "string" },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["id", "tripId", "title", "amountMinor", "createdBy"]
+    },
+    "Contribution": {
+      "title": "Contribution",
+      "description": "Pre-paid group pool fund contribution",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "tripId": { "type": "string" },
+        "userId": { "type": "string" },
+        "amountMinor": { "type": "number" },
+        "recordedBy": { "type": "string" },
+        "recordedAt": { "type": "number" },
+        "note": { "type": "string" }
+      },
+      "required": ["id", "tripId", "userId", "amountMinor"]
+    },
+    "Settlement": {
+      "title": "Settlement",
+      "description": "Debt settlement transfer between two members",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "tripId": { "type": "string" },
+        "fromUserId": { "type": "string" },
+        "toUserId": { "type": "string" },
+        "amountMinor": { "type": "number" },
+        "status": { "type": "string" },
+        "paidAt": { "type": "number" },
+        "paymentNote": { "type": "string" },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["id", "tripId", "fromUserId", "toUserId", "amountMinor"]
+    },
+    "Notification": {
+      "title": "Notification",
+      "description": "User notification alert for trip events",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "tripId": { "type": "string" },
+        "type": { "type": "string" },
+        "title": { "type": "string" },
+        "body": { "type": "string" },
+        "read": { "type": "boolean" },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["id", "userId", "title", "body"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profiles indexed by authenticated user ID"
+    },
+    "/trips/{tripId}": {
+      "schema": "Trip",
+      "description": "Trip documents containing summary, settings, and memberIds"
+    },
+    "/trips/{tripId}/members/{memberId}": {
+      "schema": "TripMember",
+      "description": "Individual trip member records"
+    },
+    "/trips/{tripId}/expenses/{expenseId}": {
+      "schema": "Expense",
+      "description": "Trip expenses and split allocations"
+    },
+    "/trips/{tripId}/contributions/{contributionId}": {
+      "schema": "Contribution",
+      "description": "Recorded member contributions to the trip kitty"
+    },
+    "/trips/{tripId}/settlements/{settlementId}": {
+      "schema": "Settlement",
+      "description": "Settlement records between trip members"
+    },
+    "/users/{userId}/notifications/{notificationId}": {
+      "schema": "Notification",
+      "description": "Private notifications for a specific user"
+    }
+  }
+}

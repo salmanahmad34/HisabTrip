@@ -1,0 +1,6 @@
+{
+  "name": "HisabTrip",
+  "description": "Expenses, contributions, and settlements — all in one place.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
